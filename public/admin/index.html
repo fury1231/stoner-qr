@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>店員管理後台 - 尋寶活動</title>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- 登入頁面 -->
+        <div id="login-page" class="login-container">
+            <div class="login-box">
+                <div class="login-header">
+                    <h1>🔐 店員管理後台</h1>
+                    <p>尋寶活動管理系統</p>
+                </div>
+
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label for="username">使用者名稱</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="請輸入使用者名稱"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">密碼</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="請輸入密碼"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" id="login-btn" class="login-btn">
+                        <span class="btn-text">登入</span>
+                        <span class="btn-loading hidden">登入中...</span>
+                    </button>
+
+                    <div id="login-error" class="error-message hidden">
+                        <p id="login-error-text"></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 主管理頁面 -->
+        <div id="admin-page" class="admin-main hidden">
+            <!-- 標題列 -->
+            <header class="admin-header">
+                <div class="header-content">
+                    <h1>🎯 尋寶管理系統</h1>
+                    <div class="header-actions">
+                        <span id="admin-username" class="username"></span>
+                        <button id="logout-btn" class="logout-btn">登出</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 主要內容 -->
+            <main class="admin-content">
+                <!-- 查詢區域 -->
+                <section class="search-section">
+                    <div class="search-card">
+                        <h2>🔍 顧客資格查詢</h2>
+                        <div class="search-form">
+                            <div class="search-input-group">
+                                <input
+                                    type="email"
+                                    id="search-email"
+                                    placeholder="請輸入顧客電子郵件 (example@email.com)"
+                                    maxlength="100"
+                                >
+                                <button id="search-btn" class="search-btn">
+                                    <span class="btn-text">查詢</span>
+                                    <span class="btn-loading hidden">查詢中...</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 結果顯示區域 -->
+                <section class="results-section">
+                    <!-- 載入狀態 -->
+                    <div id="loading-state" class="loading-card hidden">
+                        <div class="loading-spinner"></div>
+                        <p>查詢中，請稍候...</p>
+                    </div>
+
+                    <!-- 錯誤訊息 -->
+                    <div id="error-state" class="error-card hidden">
+                        <div class="error-icon">❌</div>
+                        <h3>查詢失敗</h3>
+                        <p id="error-message-text"></p>
+                    </div>
+
+                    <!-- 無結果 -->
+                    <div id="no-results" class="no-results-card hidden">
+                        <div class="no-results-icon">🔍</div>
+                        <h3>查無可兌換的抽獎資格</h3>
+                        <p>此電子郵件目前沒有可兌換的抽獎資格</p>
+                    </div>
+
+                    <!-- 結果列表 -->
+                    <div id="results-list" class="results-container hidden">
+                        <div class="results-header">
+                            <h3 id="results-title">🎫 可兌換的抽獎資格</h3>
+                            <div class="results-controls">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="show-all-tickets">
+                                    <span class="toggle-slider"></span>
+                                    <span class="toggle-label">顯示所有資格（包括已核銷）</span>
+                                </label>
+                                <span id="results-count" class="results-count"></span>
+                            </div>
+                        </div>
+                        <div id="tickets-list" class="tickets-list">
+                            <!-- 動態生成的抽獎券項目 -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 管理功能區域 -->
+                <section class="management-section">
+                    <!-- 地點列表查看 -->
+                    <div class="collapsible-card">
+                        <div class="collapsible-header" onclick="toggleCollapse('spots-list-content')">
+                            <h2>📍 尋寶地點列表</h2>
+                            <span class="collapse-icon">▶</span>
+                        </div>
+                        <div id="spots-list-content" class="collapsible-content collapsed">
+                            <div class="spots-actions">
+                                <button id="refresh-spots-btn" class="management-btn secondary">
+                                    <span class="btn-text">刷新列表</span>
+                                    <span class="btn-loading hidden">載入中...</span>
+                                </button>
+                            </div>
+                            <div id="spots-list" class="spots-container">
+                                <!-- 動態生成的地點列表 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 新增地點 -->
+                    <div class="collapsible-card">
+                        <div class="collapsible-header" onclick="toggleCollapse('add-spot-content')">
+                            <h2>🏪 新增尋寶地點</h2>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div id="add-spot-content" class="collapsible-content collapsed">
+                            <div class="management-form">
+                                <div class="input-group">
+                                    <label for="new-spot-name">地點名稱</label>
+                                    <input
+                                        type="text"
+                                        id="new-spot-name"
+                                        placeholder="請輸入地點名稱 (例如: 神秘地點 F)"
+                                        maxlength="100"
+                                    >
+                                </div>
+                                <div class="info-text">
+                                    <p>🔐 地點ID將自動生成為14位英數混合密碼</p>
+                                </div>
+                                <button id="add-spot-btn" class="management-btn">
+                                    <span class="btn-text">新增地點</span>
+                                    <span class="btn-loading hidden">新增中...</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email重置 -->
+                    <div class="collapsible-card">
+                        <div class="collapsible-header" onclick="toggleCollapse('reset-email-content')">
+                            <h2>🔄 重置Email兌換狀態</h2>
+                            <span class="collapse-icon">▼</span>
+                        </div>
+                        <div id="reset-email-content" class="collapsible-content collapsed">
+                            <div class="management-form">
+                                <div class="input-group">
+                                    <label for="reset-email">電子郵件</label>
+                                    <input
+                                        type="email"
+                                        id="reset-email"
+                                        placeholder="請輸入要重置的電子郵件 (example@email.com)"
+                                        maxlength="100"
+                                    >
+                                    <small class="input-hint">重置後該email可以重新兌換抽獎機會</small>
+                                </div>
+                                <button id="reset-email-btn" class="management-btn danger">
+                                    <span class="btn-text">重置兌換狀態</span>
+                                    <span class="btn-loading hidden">重置中...</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- 確認核銷對話框 -->
+    <div id="confirm-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚠️ 確認核銷</h3>
+            </div>
+            <div class="modal-body">
+                <p>確定要為此顧客兌換抽獎機會嗎？</p>
+                <div class="ticket-info">
+                    <p><strong>地點：</strong><span id="modal-spot-name"></span></p>
+                    <p><strong>領取時間：</strong><span id="modal-created-time"></span></p>
+                </div>
+                <p class="warning-text">核銷後此資格將無法復原！</p>
+            </div>
+            <div class="modal-actions">
+                <button id="confirm-cancel" class="modal-btn cancel">取消</button>
+                <button id="confirm-redeem" class="modal-btn confirm">確定核銷</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 確認刪除對話框 -->
+    <div id="delete-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🗑️ 確認刪除</h3>
+            </div>
+            <div class="modal-body">
+                <p>確定要永久刪除這個抽獎資格嗎？</p>
+                <div class="ticket-info">
+                    <p><strong>地點：</strong><span id="delete-modal-spot-name"></span></p>
+                    <p><strong>狀態：</strong><span id="delete-modal-status"></span></p>
+                    <p><strong>領取時間：</strong><span id="delete-modal-created-time"></span></p>
+                </div>
+                <p class="warning-text">此操作無法復原！</p>
+            </div>
+            <div class="modal-actions">
+                <button id="delete-cancel" class="modal-btn cancel">取消</button>
+                <button id="delete-confirm" class="modal-btn danger">確定刪除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code 顯示對話框 -->
+    <div id="qrcode-modal" class="modal-overlay hidden">
+        <div class="modal-content qrcode-modal-content">
+            <div class="modal-header">
+                <h3>📱 QR Code - <span id="qrcode-spot-name"></span></h3>
+                <button id="qrcode-close" class="close-btn" title="關閉">✕</button>
+            </div>
+            <div class="modal-body qrcode-modal-body">
+                <div class="qrcode-container">
+                    <div id="qrcode-loading" class="qrcode-loading">
+                        <div class="loading-spinner"></div>
+                        <p>生成 QR Code 中...</p>
+                    </div>
+                    <div id="qrcode-content" class="qrcode-content hidden">
+                        <div class="qrcode-image-container">
+                            <img id="qrcode-image" src="" alt="QR Code">
+                        </div>
+                        <div class="qrcode-info">
+                            <p><strong>地點名稱：</strong><span id="qrcode-location-name"></span></p>
+                            <p><strong>網址：</strong><span id="qrcode-url"></span></p>
+                            <div class="qrcode-size-controls">
+                                <label>
+                                    大小：
+                                    <select id="qrcode-size-select">
+                                        <option value="200">小 (200px)</option>
+                                        <option value="300" selected>中 (300px)</option>
+                                        <option value="400">大 (400px)</option>
+                                        <option value="500">超大 (500px)</option>
+                                    </select>
+                                </label>
+                                <button id="regenerate-qr" class="regenerate-btn">重新生成</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="download-qr" class="modal-btn primary">💾 下載圖片</button>
+                <button id="print-qr" class="modal-btn secondary">🖨️ 列印</button>
+                <button id="qrcode-cancel" class="modal-btn cancel">關閉</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

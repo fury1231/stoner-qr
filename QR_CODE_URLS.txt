@@ -1,0 +1,45 @@
+尋寶活動 - QR Code 網址列表
+==========================================
+
+請使用以下網址生成對應的 QR Code，並放置在指定的尋寶地點：
+
+地點 A - 神秘地點 A
+網址: http://localhost:4500/?spot_id=location_A
+部署後請替換為: http://your-domain.com/?spot_id=location_A
+
+地點 B - 神秘地點 B
+網址: http://localhost:4500/?spot_id=location_B
+部署後請替換為: http://your-domain.com/?spot_id=location_B
+
+地點 C - 神秘地點 C
+網址: http://localhost:4500/?spot_id=location_C
+部署後請替換為: http://your-domain.com/?spot_id=location_C
+
+地點 D - 神秘地點 D
+網址: http://localhost:4500/?spot_id=location_D
+部署後請替換為: http://your-domain.com/?spot_id=location_D
+
+地點 E - 神秘地點 E
+網址: http://localhost:4500/?spot_id=location_E
+部署後請替換為: http://your-domain.com/?spot_id=location_E
+
+==========================================
+
+QR Code 生成建議：
+1. 使用線上 QR Code 生成器（如 qr-code-generator.com）
+2. 設定 QR Code 大小至少 3x3 公分
+3. 選擇高容錯率（H級別）
+4. 列印時使用高品質設定
+5. 建議使用防水材質或護貝
+
+測試建議：
+- 在各種光線條件下測試掃描效果
+- 使用不同品牌手機進行測試
+- 確保 QR Code 放置高度適中（約 1.2-1.8 公尺）
+
+店員管理後台：
+網址: http://localhost:4500/admin
+部署後請替換為: http://your-domain.com/admin
+預設帳號: admin
+預設密碼: admin123
+（請在部署到生產環境前修改密碼）

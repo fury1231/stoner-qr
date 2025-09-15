@@ -1,0 +1,30 @@
+{
+  "name": "qrcode-treasure-hunt",
+  "version": "1.0.0",
+  "description": "QR Code treasure hunt activity system for retail stores",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "init-db": "node server/init-db.js"
+  },
+  "keywords": [
+    "qrcode",
+    "treasure-hunt",
+    "lottery",
+    "retail"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "qrcode": "^1.5.4",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尋寶活動</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 尋寶活動</h1>
+            <p class="subtitle">掃描 QR Code 完成踩點，獲得抽獎機會！</p>
+        </div>
+
+        <div class="content">
+            <!-- 錯誤提示 -->
+            <div id="error-message" class="message error hidden">
+                <p id="error-text"></p>
+            </div>
+
+            <!-- 成功提示 -->
+            <div id="success-message" class="message success hidden">
+                <div class="success-icon">✅</div>
+                <p id="success-text"></p>
+            </div>
+
+            <!-- 地點資訊 -->
+            <div id="location-info" class="location-card hidden">
+                <div class="location-header">
+                    <span class="location-icon">📍</span>
+                    <h2 id="location-name">載入中...</h2>
+                </div>
+                <p class="location-description">請輸入您的電子郵件完成踩點</p>
+            </div>
+
+            <!-- 輸入表單 -->
+            <div id="claim-form" class="form-container hidden">
+                <div class="input-group">
+                    <label for="email-input">電子郵件</label>
+                    <input
+                        type="email"
+                        id="email-input"
+                        placeholder="請輸入電子郵件 (example@email.com)"
+                        maxlength="100"
+                    >
+                    <small class="input-hint">請輸入有效的電子郵件地址</small>
+                </div>
+
+                <button id="claim-button" class="claim-btn">
+                    <span class="btn-text">領取我的抽獎資格</span>
+                    <span class="btn-loading hidden">處理中...</span>
+                </button>
+            </div>
+
+            <!-- 無效頁面 -->
+            <div id="invalid-page" class="invalid-container hidden">
+                <div class="invalid-icon">❌</div>
+                <h2>無效的 QR Code</h2>
+                <p>此 QR Code 無效或活動已結束</p>
+                <p>請確認您掃描的是正確的活動 QR Code</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>完成踩點後，請憑電子郵件至店內兌換抽獎機會</p>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
